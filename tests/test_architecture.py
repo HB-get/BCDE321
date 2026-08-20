@@ -14,7 +14,9 @@ def imported_modules(path: Path) -> set[str]:
 
 
 def test_domain_package_does_not_import_tkinter() -> None:
-    domain = Path("src/zimp/domain")
+    # Lets the test pass regardless of where pytest is run from
+    project_root = Path(__file__).resolve().parent.parent
+    domain = project_root / "src" / "zimp" / "domain"
     # rglob, not glob: domain code now lives in a subfolder per owner, and a
     # non-recursive scan would find nothing and pass without checking anything.
     sources = list(domain.rglob("*.py"))

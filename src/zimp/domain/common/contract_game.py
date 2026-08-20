@@ -6,7 +6,7 @@ from zimp.domain.common.result import Result
 
 
 class GameContract(Protocol):
-    def reset(self) -> None:
+    def reset(self, map_seed: int | None = None) -> None:
         """Reset all game components"""
     def move_player(self, direction: Direction) -> ErrorCode | None:
         """Attempt to move the player in a given direction"""
@@ -28,11 +28,13 @@ class GameContract(Protocol):
         """Add the found item to the items"""
     def dont_take_item(self) -> ErrorCode | None:
         """Abandon the item that was found"""
-    def discard_item(self, slot_id: int = -1) -> ErrorCode | None:
+    def discard_item(self, slot_id: int) -> ErrorCode | None:
         """Discard the chosen item from the items"""
     def use_item(self, item_id: ItemCode) -> ErrorCode | None:
         """Use the chosen item (gasoline or soda)"""
-    def end_turn(self, is_cower: bool = False) -> Result:
+    def end_turn(self, is_cower: bool = False) -> ErrorCode | None:
         """End the current turn, optionally cowering"""
     def check_win_loss(self) -> Result:
         """To be called after each action; determines if the player has won or lost"""
+    def get_debug_msgs(self) -> str:
+        """Debug method to return game state"""

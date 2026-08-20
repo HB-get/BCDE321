@@ -222,14 +222,6 @@ def test_using_gasoline_without_a_chainsaw_is_refused_and_keeps_it() -> None:
     assert items.held_items() == (ItemCode.GASOLINE, ItemCode.NONE)
 
 
-def test_using_oil_is_refused_and_keeps_it() -> None:
-    """Oil is not a thing the player uses on its own."""
-    items = carrying("oil")
-
-    assert items.use(ItemCode.OIL) is not None
-    assert items.held_items() == (ItemCode.OIL, ItemCode.NONE)
-
-
 def test_using_a_weapon_is_refused_and_keeps_it() -> None:
     items = carrying("machete")
 

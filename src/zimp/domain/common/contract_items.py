@@ -14,7 +14,7 @@ class ItemsContract(Protocol):
     """
 
     def reset(self) -> None:
-        """Reset the inventory to its initial state"""
+        """Reset the inventory to its initial game_state"""
 
     def record_battle(self) -> None: #unchanged
         """Tell the inventory a battle happened so the chainsaw burns fuel.

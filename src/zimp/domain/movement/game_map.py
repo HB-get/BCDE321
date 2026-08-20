@@ -472,7 +472,7 @@ class GameMap:
 
     def reset(self, map_dimensions: tuple[int, int] | None = None, starting_position: tuple[int, int] | None = None,
               randomizer_seed: int | None = None) -> ErrorCode | None:
-        """Resets the game map to its initial state.
+        """Resets the game map to its initial game_state.
         Args:
             map_dimensions (tuple[int, int] | None): New map dimensions (width, height) (1-indexed).
                 Defaults to None (uses previous map dimensions).

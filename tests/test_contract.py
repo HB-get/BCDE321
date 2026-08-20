@@ -1,6 +1,6 @@
 from zimp.domain.basic_movement import BasicMovement
 from zimp.domain.contracts import MovementGateway
-from zimp.domain.game_state import GameState
+from zimp.domain.game_state.game_state import GameState
 from zimp.support.fakes import FakeMovementGateway
 
 

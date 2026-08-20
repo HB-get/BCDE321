@@ -249,9 +249,9 @@ def test_rotate_tile_propagates_movement_error(game):
     assert result == ErrorCode.CANT_MOVE_NOW
 
 
-# ======================================================================
+# -----------------------------------------------------------------------------------------------------------
 # place_tile
-# ======================================================================
+# -----------------------------------------------------------------------------------------------------------
 
 def test_place_tile_when_not_moving_returns_error(game):
     game, state, movement, _, _ = game
@@ -346,7 +346,7 @@ def test_pick_zombie_door_propagates_movement_error(game):
 # -----------------------------------------------------------------------------------------------------------
 
 def test_attack_when_not_allowed_returns_error(game):
-    game, state, items, _, = game[0], game[1], game[3], game[4]
+    game, state, movement, items, _ = game
 
     state.can_attack = False
 
@@ -874,28 +874,3 @@ def test_check_win_loss_returns_not_finished(game):
 
     assert result.is_fail()
     assert result.get_error_code() == ErrorCode.NOT_WON_OR_LOST
-
-
-# -----------------------------------------------------------------------------------------------------------
-# get_status
-# -----------------------------------------------------------------------------------------------------------
-
-def test_get_status_uses_state_and_items(game):
-    game, state, _, items, _ = game
-
-    state.hp = 7
-    items.attack_bonus_result = Result.success(2)
-    items.held_items_result = (
-        ItemCode.SODA,
-        ItemCode.OIL,
-    )
-
-    result = game.get_status()
-
-    assert result == (
-        f"Health: 7, Attack: 3, "
-        f"Items: {ItemCode.SODA}, {ItemCode.OIL}"
-    )
-
-    assert items.attack_bonus_calls == [False]
-    assert items.held_items_calls == 1

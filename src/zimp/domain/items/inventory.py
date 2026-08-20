@@ -6,7 +6,7 @@ class Effect:
     """What using an item does to the player.
 
     Returned to the caller rather than applied directly, so the inventory
-    never reaches into another component's state.
+    never reaches into another component's game_state.
     """
 
     health: int = 0
@@ -23,6 +23,7 @@ WEAPON_ATTACK: dict[str, int] = {
 
 # Consumables are active: the player uses them and they are spent.
 CONSUMABLE_EFFECTS: dict[str, Effect] = {
+    "oil": Effect(),
     "can_of_soda": Effect(health=2),
 }
 

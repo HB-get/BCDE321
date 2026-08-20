@@ -240,4 +240,4 @@ class GameController:
             return None
 
     def get_status(self) -> str:
-        return self._game.get_status()
+        return self._game.get_debug_msgs()

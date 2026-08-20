@@ -6,7 +6,7 @@ from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.item_code import ItemCode
 from zimp.domain.game.game import Game
 
-from zimp.domain.state.game_state import GameState
+from zimp.domain.game_state.game_state import GameState
 from zimp.domain.events.events import Events
 from zimp.domain.items.game_items import GameItems
 from zimp.domain.movement.game_map import GameMap
@@ -90,7 +90,7 @@ def test_items_gracefully_handles_having_invalid_item_added(none_components):
 def test_reset_resets_all_components(none_components):
     game, state, movement, items,events = none_components
 
-    #state modification
+    #game_state modification
     start_hp = state.get_hp()
     state.change_hp(1)
 
@@ -737,7 +737,7 @@ def test_use_soda_heals(none_components):
 def test_use_other_items_fails(none_components):
     _, state, movement, _,events = none_components
     for item in (ItemCode.CHAINSAW, ItemCode.MACHETE, ItemCode.CANDLE,
-                 ItemCode.GOLF_CLUB, ItemCode.GRISLY_FEMUR, ItemCode.BOARD_WITH_NAILS, ItemCode.OIL):
+                 ItemCode.GOLF_CLUB, ItemCode.GRISLY_FEMUR, ItemCode.BOARD_WITH_NAILS):
         items = GameItems()
         game = Game(state, movement, items, events)
 

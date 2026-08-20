@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from zimp.domain.state.game_state import GameState
+from zimp.domain.game_state.game_state import GameState
 from zimp.domain.movement.game_map import GameMap
 from zimp.domain.events.events import Events
 from zimp.domain.items.game_items import GameItems
@@ -17,7 +17,7 @@ def build_app() -> tk.Tk:
     movement = GameMap()
     items = GameItems()
     events = Events()
-    game = Game(state, movement, items, events)
+    game = Game(state, movement, items, events, map_seed=408, debug=True)
 
     TkGameView(root, GameController(game))
     return root

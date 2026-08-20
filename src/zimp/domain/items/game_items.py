@@ -8,19 +8,20 @@ speaks `ItemCode`, and reads a refusal as a returned `ErrorCode` -- or a
 
 Rather than teach either side the other's words, the translation lives here,
 at the boundary, in the same spirit as returning an `Effect` instead of
-reaching into another component's state. `Inventory` stays the one place the
+reaching into another component's game_state. `Inventory` stays the one place the
 item rules are written; this class only restates its answers.
 """
 
 from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.item_code import ItemCode
-from zimp.domain.common.item_ids import ID_FOR_ITEM_CODE, ITEM_CODE_FOR_ID
+from zimp.domain.items.item_ids import ID_FOR_ITEM_CODE, ITEM_CODE_FOR_ID
 from zimp.domain.common.result import Result
 from zimp.domain.items.inventory import Inventory
 
 # Which refusal to report when a usable item is not being carried. Every
 # other item is not usable at all.
 _MISSING = {
+    ItemCode.OIL: ErrorCode.NO_OIL,
     ItemCode.SODA: ErrorCode.NO_SODA,
     ItemCode.GASOLINE: ErrorCode.NO_GASOLINE,
 }
@@ -94,8 +95,7 @@ class GameItems:
 
     def use(self, item_id: ItemCode) -> ErrorCode | None:
         if item_id not in _MISSING:
-            # Weapons are passive: carried, never used. Oil is the same --
-            # it is not something the player uses on its own.
+            # Weapons are passive: carried, never used.
             return ErrorCode.FATAL_ERROR
         if not self._carrying(item_id):
             return _MISSING[item_id]
@@ -104,6 +104,8 @@ class GameItems:
         if item_id is ItemCode.SODA:
             # The Effect receipt is dropped here: Game applies the healing
             # itself. The Tkinter path still reads it.
+            self._inventory.use(name)
+        elif item_id is ItemCode.OIL:
             self._inventory.use(name)
         else:
             if not self._carrying(ItemCode.CHAINSAW):

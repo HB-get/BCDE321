@@ -1,4 +1,4 @@
-from zimp.domain.game_state import GameState
+from zimp.domain.game_state.game_state import GameState
 
 
 class BasicMovement:

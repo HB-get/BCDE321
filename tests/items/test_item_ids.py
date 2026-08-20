@@ -1,7 +1,7 @@
 import pytest
 
 from zimp.domain.common.item_code import ItemCode
-from zimp.domain.common.item_ids import (
+from zimp.domain.items.item_ids import (
     CARD_ITEM_IDS,
     ID_FOR_ITEM_CODE,
     IMPLEMENTED_ITEMS,

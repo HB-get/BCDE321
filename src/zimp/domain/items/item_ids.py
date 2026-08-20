@@ -4,7 +4,7 @@ The deck reports a found item as a number (`DevCard.item`). The inventory
 works in names (`"machete"`). Neither side should have to learn the other's
 vocabulary, so the translation lives here and is applied once, at the
 boundary, in the same spirit as returning an `Effect` instead of reaching
-into another component's state.
+into another component's game_state.
 
 Owned by items. Consumed by whoever resolves a SEARCH_FOR_ITEM result.
 """
@@ -33,6 +33,7 @@ RULEBOOK_ITEMS: tuple[str, ...] = (
 # between "a name exists" and "the name does something" stays visible.
 IMPLEMENTED_ITEMS: frozenset[str] = frozenset(
     {
+        "oil",
         "can_of_soda",
         "chainsaw",
         "golf_club",

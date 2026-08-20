@@ -1,12 +1,11 @@
 from zimp.domain.items.inventory import Effect
-from zimp.integration.game_controller import GameController
 from zimp.support.fakes import FakeMovementGateway
 from zimp.support.items.fake_items import FakeItemsGateway
+from tests.items.fake_game_controller import FakeGameController
 
-
-def controller_with(items: FakeItemsGateway) -> GameController:
+def controller_with(items: FakeItemsGateway) -> FakeGameController:
     """A controller whose only real collaborator under test is the inventory."""
-    return GameController(FakeMovementGateway(), items)
+    return FakeGameController(FakeMovementGateway(), items)
 
 
 def test_picking_up_an_item_reaches_the_inventory() -> None:

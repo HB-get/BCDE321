@@ -1,3 +1,4 @@
+from zimp.domain.common.dev_card import CardEffectType
 from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.result import Result
@@ -9,7 +10,6 @@ from zimp.domain.common.contract_game_state import GameStateContract
 
 from zimp.domain.common.item_code import ItemCode
 
-
 class Game:
     """Boundary class connecting the controller to domain components"""
 
@@ -18,7 +18,8 @@ class Game:
                  movement: MovementContract,
                  items: ItemsContract,
                  events: EventsContract,
-                 map_seed: int | None = None
+                 map_seed: int | None = None,
+                 debug: bool = False
                  ) -> None:
         self._state = state
         self._events = events
@@ -27,12 +28,25 @@ class Game:
 
         self.reset(map_seed)
 
+        # yucky debug
+        self._debug_msgs = []
+        self._debug = debug
+        self._debug_direction = Direction.NORTH
+        # end yucky debug
+
     def _draw_event_card(self) -> ErrorCode | None:
         draw_result, shuffled = self._events.draw_event(self._state.get_time())
         if draw_result.is_fail():
             return draw_result.get_error_code()
 
-        print(draw_result.get_data())
+        # yucky debug
+        if self._debug:
+            effect = draw_result.get_data()
+            self._debug_msgs += ["CARD" + (f"{effect.effect_type.name}: {effect.value}"
+                if effect.effect_type in (CardEffectType.ZOMBIES, CardEffectType.HEALTH)
+                else effect.effect_type.name) + " | "]
+        # end yucky debug
+
         self._state.apply_card_effect(draw_result.get_data())
         if shuffled:
             self._state.advance_time()
@@ -67,6 +81,10 @@ class Game:
         if self._movement.is_placement_mode_on(): # Unknown tile
             self._state.start_move()
             return None
+
+        # yucky debug
+        self._debug_direction = direction
+        # end yucky debug
 
         return self._draw_event_card() # Known tile, skip placement
 
@@ -125,6 +143,10 @@ class Game:
 
         self._do_post_event_checks()
 
+        # yucky debug
+        self._debug_msgs += ["ATTACKED | "]
+        # end yucky debug
+
         return None
 
     def flee(self, direction: Direction, with_oil: bool = False) -> ErrorCode | None:
@@ -146,6 +168,9 @@ class Game:
 
         self._do_post_event_checks()
 
+        # yucky debug
+        self._debug_msgs += ["FLED | "]
+        # end yucky debug
         return None
 
     def perform_search_for_item(self) -> ErrorCode | None:
@@ -155,11 +180,16 @@ class Game:
 
         draw_result, shuffled = self._events.draw_item()
         if not draw_result.is_fail():
-            self._items.find_item(draw_result.get_data())
+            item = draw_result.get_data()
+            self._items.find_item(item)
             self._state.find_item()
 
             if shuffled:
                 self._state.advance_time()
+
+            # yucky debug
+            self._debug_msgs += [f"FOUND {str(item)} | "]
+            # end yucky debug
 
         return draw_result.get_error_code()
 
@@ -171,6 +201,10 @@ class Game:
         self._state.end_searching_item()
 
         self._do_post_event_checks()
+
+        # yucky debug
+        self._debug_msgs += [f"NO SEARCH | "]
+        # end yucky debug
 
         return None
 
@@ -187,6 +221,10 @@ class Game:
 
         self._do_post_event_checks()
 
+        # yucky debug
+        self._debug_msgs += [f"KEEP | "]
+        # end yucky debug
+
         return None
 
     def dont_take_item(self) -> ErrorCode | None:
@@ -199,11 +237,19 @@ class Game:
 
         self._do_post_event_checks()
 
+        # yucky debug
+        self._debug_msgs += [f"DON'T KEEP | "]
+        # end yucky debug
+
         return None
 
     def discard_item(self, slot_id: int) -> ErrorCode | None:
         """Discard the chosen item from the items"""
-        return self._items.discard(slot_id)
+        discard_result = self._items.discard(slot_id)
+        if isinstance(discard_result, ErrorCode):
+            return discard_result
+
+        return None
 
     def use_item(self, item_id: ItemCode) -> ErrorCode | None:
         """Use the chosen item (gasoline or soda)"""
@@ -234,7 +280,11 @@ class Game:
                 self._state.advance_time()
 
         tile_effect = self._movement.get_tile_effect()
-        print(tile_effect)
+
+        # yucky debug
+        self._debug_msgs += [f"TILE {str(tile_effect)} | "]
+        # end yucky debug
+
         self._state.do_end_turn_effect(tile_effect)
 
         if self._state.get_is_doing_events(): # temple or graveyard
@@ -243,6 +293,10 @@ class Game:
             pass
         else: #heal or none
             self._state.start_new_turn()
+
+            # yucky debug
+            self._debug_msgs = []
+            # end yucky debug
 
         return None
 
@@ -255,10 +309,18 @@ class Game:
 
         return Result.fail(ErrorCode.NOT_WON_OR_LOST)
 
-    def get_status(self) -> str:
+    def get_debug_msgs(self) -> str:
         """Debug method to return game state"""
         hp = self._state.get_hp()
-        attack = 1+self._items.attack_bonus(False).get_data()
+        attack = 1 + self._items.attack_bonus(False).get_data()
         items_tuple = self._items.held_items()
         items = f"{items_tuple[0]}, {items_tuple[1]}"
-        return f"Health: {hp}, Attack: {attack}, Items: {items}"
+
+        if self._state.get_is_moving():
+            player = self._movement._GameMap__calculate_position(self._movement.get_player_position(), self._debug_direction).get_data()
+        else:
+            player = self._movement.get_player_position()
+        doors = self._movement._GameMap__display_tiles.get(player).get_door_directions()
+        return f"Health: {hp}, Attack: {attack}, Items: {items}\n"\
+            + f"{doors}\n"\
+            + " ".join(self._debug_msgs)
