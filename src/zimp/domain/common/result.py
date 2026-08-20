@@ -1,3 +1,9 @@
+# Required below Python 3.14. Result[T] annotates `-> Result[T]` inside its own
+# class body, before the name exists, so without this line the module raises
+# NameError on import and every test that touches it fails to collect.
+# Please keep it when resolving a merge on this file.
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from zimp.domain.common.error_code import ErrorCode
