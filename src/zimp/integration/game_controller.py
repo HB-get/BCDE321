@@ -8,6 +8,12 @@ class GameController:
         self._movement = movement
 
     def handle_move(self, direction: str) -> str:
+        """Handle a movement request from the UI."""
+        direction = direction.strip().lower()
+
+        if direction not in {"north", "south", "east", "west"}:
+            return f"Cannot move: invalid direction '{direction}'."
+
         try:
             return self._movement.move(direction)
         except ValueError as error:
