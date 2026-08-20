@@ -1,24 +1,14 @@
+from zimp.domain.common.contract_game import GameContract
 from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.item_code import ItemCode
-from zimp.domain.game.game import Game
-from zimp.domain.common.contract_game_state import GameStateContract
-from zimp.domain.common.contract_movement import MovementContract
-from zimp.domain.common.contract_items import ItemsContract
-from zimp.domain.common.contract_events import EventsContract
 
 
 class GameController:
     """Thin, testable boundary between Tkinter events and domain behaviour."""
 
-    def __init__(
-            self,
-            state: GameStateContract,
-            movement: MovementContract,
-            items: ItemsContract,
-            events: EventsContract,
-    ) -> None:
-        self._game = Game(state, movement, items, events)
+    def __init__(self, game: GameContract):
+        self._game = game
 
     def reset(self) -> str:
         self._game.reset()

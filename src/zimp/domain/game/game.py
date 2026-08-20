@@ -256,6 +256,7 @@ class Game:
         return Result.fail(ErrorCode.NOT_WON_OR_LOST)
 
     def get_status(self) -> str:
+        """Debug method to return game state"""
         hp = self._state.get_hp()
         attack = 1+self._items.attack_bonus(False).get_data()
         items_tuple = self._items.held_items()

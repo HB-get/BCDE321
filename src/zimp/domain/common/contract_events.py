@@ -7,7 +7,7 @@ class EventsContract(Protocol):
 
     def reset(self) -> None:
         """Reset the deck"""
-    def get_remaining_card_count(self):
+    def get_remaining_card_count(self) -> int:
         """Get the number of dev cards currently in the deck"""
     def draw_event(self, time: int) -> tuple[Result, bool]:
         """Draw a dev card from the deck and return the effect, shuffling if required"""
