@@ -232,10 +232,10 @@ class GameState:
             self.change_hp(self._TILE_HEAL_AMOUNT)
         elif tile_effect == TileEffect.SEARCH:
             self.start_searching_item()
-        elif tile_effect == TileEffect.FIND_TOTEM:
+        elif tile_effect == TileEffect.FIND_TOTEM and not self.has_totem:
             self.mode = Mode.DEV_CARD
             self.take_totem()
-        elif tile_effect == TileEffect.BURY_TOTEM:
+        elif tile_effect == TileEffect.BURY_TOTEM and not self.buried_totem:
             self.mode = Mode.DEV_CARD
             self.bury_totem()
 

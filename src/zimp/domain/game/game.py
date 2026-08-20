@@ -294,10 +294,6 @@ class Game:
         else: #heal or none
             self._state.start_new_turn()
 
-            # yucky debug
-            self._debug_msgs = []
-            # end yucky debug
-
         return None
 
     def check_win_loss(self) -> Result:
@@ -315,12 +311,14 @@ class Game:
         attack = 1 + self._items.attack_bonus(False).get_data()
         items_tuple = self._items.held_items()
         items = f"{items_tuple[0]}, {items_tuple[1]}"
+        time = self._state.get_time()+9
+        cards = self._events.get_remaining_card_count()
 
         if self._state.get_is_moving():
             player = self._movement._GameMap__calculate_position(self._movement.get_player_position(), self._debug_direction).get_data()
         else:
             player = self._movement.get_player_position()
         doors = self._movement._GameMap__display_tiles.get(player).get_door_directions()
-        return f"Health: {hp}, Attack: {attack}, Items: {items}\n"\
+        return f"Health: {hp}, Attack: {attack}, Items: {items}, Time: {time}, Cards: {cards}\n"\
             + f"{doors}\n"\
             + " ".join(self._debug_msgs)
