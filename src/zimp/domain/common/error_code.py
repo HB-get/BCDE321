@@ -22,5 +22,30 @@ class ErrorCode(Enum):
     INVALID_TYPE_RANDOMIZER_SEED = auto()
     FATAL_UNPLACEABLE_TILE = auto()
 
+    """GAME ERRORS"""
+    CANT_MOVE_NOW = auto()
+    CANT_ROTATE_NOW = auto()
+    CANT_PLACE_NOW = auto()
+    NOT_ZOMBIE_DOOR = auto()
+    NO_OIL = auto()
+    NO_INSTANT_KILL = auto()
+    CANT_ATTACK = auto()
+    CANT_FLEE = auto()
+    HAVENT_FOUND_ITEM = auto()
+    CANT_END_TURN_NOW = auto()
+    CANT_SEARCH_NOW = auto()
+    NOT_WON_OR_LOST = auto()
+
+    """GAME STATE ERRORS"""
+    ALREADY_COWERED = auto()
+
+    """ITEM ERRORS"""
+    SLOT_EMPTY = auto()
+    NO_GASOLINE = auto()
+    NO_CHAINSAW = auto()
+    NO_SODA = auto()
+    NO_SPACE = auto()
+    NO_FOUND_ITEM = auto()
+
     """GENERAL ERRORS"""
     FATAL_ERROR = auto()
