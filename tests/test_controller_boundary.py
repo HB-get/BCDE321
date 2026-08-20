@@ -1,44 +1,59 @@
+from zimp.domain.common.direction import Direction
 from zimp.integration.game_controller import GameController
-from zimp.support.fakes import FakeMovementGateway
 
 
-def test_controller_calls_dependency_across_boundary() -> None:
-    fake = FakeMovementGateway("Integrated successfully.")
+class FakeGame:
+    def __init__(self, result=None) -> None:
+        self.result = result
+        self.calls = []
 
-    result = GameController(fake).handle_move("east")
+    def reset(self) -> None:
+        self.calls.append(("reset",))
 
-    assert result == "Integrated successfully."
-    assert fake.calls == ["east"]
-
-
-def test_controller_maps_expected_failure_to_visible_message() -> None:
-    fake = FakeMovementGateway()
-    fake.failure = ValueError("blocked")
-
-    assert GameController(fake).handle_move("north") == "Cannot move: blocked"
+    def move_player(self, direction: Direction):
+        self.calls.append(("move_player", direction))
+        return self.result
 
 
-def test_controller_maps_unavailable_component_to_visible_message() -> None:
-    fake = FakeMovementGateway()
-    fake.failure = RuntimeError("dependency offline")
+def test_controller_calls_game_for_up_movement() -> None:
+    fake = FakeGame()
 
-    assert GameController(fake).handle_move("north").startswith("Cannot move:")
+    result = GameController(fake).move_up()
 
-
-
-def test_controller_normalises_movement_direction() -> None:
-    fake = FakeMovementGateway("Moved north.")
-
-    result = GameController(fake).handle_move(" NORTH ")
-
-    assert result == "Moved north."
-    assert fake.calls == ["north"]
+    assert result == "Moved up."
+    assert fake.calls == [("move_player", Direction.NORTH)]
 
 
-def test_controller_rejects_invalid_direction() -> None:
-    fake = FakeMovementGateway()
+def test_controller_calls_game_for_down_movement() -> None:
+    fake = FakeGame()
 
-    result = GameController(fake).handle_move("banana")
+    result = GameController(fake).move_down()
 
-    assert result == "Cannot move: invalid direction 'banana'."
-    assert fake.calls == []
+    assert result == "Moved down."
+    assert fake.calls == [("move_player", Direction.SOUTH)]
+
+
+def test_controller_calls_game_for_left_movement() -> None:
+    fake = FakeGame()
+
+    result = GameController(fake).move_left()
+
+    assert result == "Moved left."
+    assert fake.calls == [("move_player", Direction.WEST)]
+
+
+def test_controller_calls_game_for_right_movement() -> None:
+    fake = FakeGame()
+
+    result = GameController(fake).move_right()
+
+    assert result == "Moved right."
+    assert fake.calls == [("move_player", Direction.EAST)]
+
+
+def test_controller_returns_game_error_for_failed_movement() -> None:
+    fake = FakeGame("INVALID_MOVE_NO_DOOR")
+
+    result = GameController(fake).move_up()
+
+    assert result == "INVALID_MOVE_NO_DOOR"
