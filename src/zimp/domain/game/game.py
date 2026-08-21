@@ -59,6 +59,7 @@ class Game:
             if self._movement.need_zombie_door():
                 self._state.start_zombie_door()
             elif self._state.get_has_ended_turn():
+                print("###############")
                 self._state.start_new_turn()
 
     def reset(self, map_seed: int | None = None) -> None:
@@ -67,6 +68,10 @@ class Game:
         self._events.reset()
         self._movement.reset(randomizer_seed=map_seed)  # 408
         self._items.reset()
+
+        # yucky debug
+        self._debug_msgs = []
+        # end yucky debug
 
     def move_player(self, direction: Direction) -> ErrorCode | None:
         """Attempt to move the player in a given direction"""
