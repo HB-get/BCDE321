@@ -16,10 +16,10 @@ from zimp.domain.items.inventory import Inventory
 from zimp.support.items.fake_items import FakeItemsGateway
 
 
-def test_game_items_satisfies_the_game_contract() -> None:
-    assert isinstance(GameItems(), ItemsContract)
+class TestItemsContract:
+    def test_game_items_satisfies_the_game_contract(self) -> None:
+        assert isinstance(GameItems(), ItemsContract)
 
-
-def test_real_and_fake_satisfy_the_inventory_contract() -> None:
-    assert isinstance(Inventory(), InventoryContract)
-    assert isinstance(FakeItemsGateway(), InventoryContract)
+    def test_real_and_fake_satisfy_the_inventory_contract(self) -> None:
+        assert isinstance(Inventory(), InventoryContract)
+        assert isinstance(FakeItemsGateway(), InventoryContract)
