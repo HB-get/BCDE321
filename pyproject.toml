@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bcde321-zimp-starter"
 version = "0.1.0"
-description = "BCDE321 2026S2 A2 Zombie in My Pocket walking skeleton"
-requires-python = ">=3.11"
+description = "BCDE321 2026S2 A2 Zombie in My Pocket - working version"
+requires-python = ">=3.14"
 
 [tool.setuptools.packages.find]
 where = ["src"]
