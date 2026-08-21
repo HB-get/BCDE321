@@ -1,7 +1,7 @@
 from zimp.domain.common.contract_events import ContractEvents
 from zimp.domain.common.contract_game_state import ContractGameState
 from zimp.domain.common.contract_items import ContractItems
-from zimp.domain.common.contract_movement import ContractMovement
+from zimp.domain.common.contract_map import ContractMap
 from zimp.domain.common.dev_card import CardEffectType
 from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
@@ -14,7 +14,7 @@ class Game:
 
     def __init__(self,
                  state: ContractGameState,
-                 movement: ContractMovement,
+                 movement: ContractMap,
                  items: ContractItems,
                  events: ContractEvents,
                  map_seed: int | None = None,

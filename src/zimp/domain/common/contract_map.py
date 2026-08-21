@@ -7,7 +7,7 @@ from zimp.domain.common.tile_effect import TileEffect
 
 
 @runtime_checkable
-class ContractMovement(Protocol):
+class ContractMap(Protocol):
     """Contract for map"""
 
     def move(self, direction: Direction) -> ErrorCode | None:
