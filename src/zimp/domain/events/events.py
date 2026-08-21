@@ -22,7 +22,7 @@ class Events:
         self._deck: list[DevCard] = list(cards)
 
     @staticmethod
-    def _validate_cards(cards: tuple[DevCard, ...]):
+    def _validate_cards(cards: tuple[DevCard, ...]) -> None:
         """Validates the card deck and raises an error if any problems are found"""
         if cards is None or not cards:
             raise ValueError("No dev cards configured")

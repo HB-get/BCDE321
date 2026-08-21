@@ -1,10 +1,11 @@
+
 # BCDE321 Advanced Programming: A2 Walking Skeleton
 
 This repository provides one common Tkinter and pytest baseline for Assessment 2. It demonstrates a small framework-to-domain seam without completing the Zombie in My Pocket solution.
 
 ## Requirements
 
-- Python 3.11 or later
+- Python 3.14 or later
 - Tkinter included with the supported campus Python installation
 - pytest
 
