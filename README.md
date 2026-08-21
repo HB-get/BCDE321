@@ -1,16 +1,16 @@
-# BCDE321 Advanced Programming: A2 Walking Skeleton
+# BCDE321 Advanced Programming: Zombies In My Pocket
 
-This repository provides one common Tkinter and pytest baseline for Assessment 2. It demonstrates a small framework-to-domain seam without completing the Zombie in My Pocket solution.
+This repository contains the ZIMP game created by "Just a couple of cool guys" for Assessment 2.
 
 ## Requirements
 
-- Python 3.11 or later
-- Tkinter included with the supported campus Python installation
+- Python 3.14 or later
+- Tkinter
 - pytest
 
 ## Setup
 
-Create and activate a virtual environment if directed by your tutor, then install the project and pytest:
+Create and activate a virtual environment, then install the project and pytest:
 
 ```powershell
 python -m pip install -e .
@@ -37,26 +37,12 @@ python -m pytest
 python -m zimp.main
 ```
 
-## Definition of the supplied baseline
+## How to Play
 
-- a minimal Tkinter shell;
-- a small domain state object;
-- one illustrative movement contract and implementation;
-- one thin controller boundary;
-- one controllable fake;
-- normal, failure-path, contract, and architecture tests;
-- templates for ownership, evidence, and material AI use.
-
-## Your assessed work
-
-Your team must not treat the supplied movement example as the complete product. Each learner must implement a substantial component or vertical feature, integrate it across an explicit boundary, and verify expected and failure behaviour using pytest.
-
-Read:
-
-- `docs/architecture-map.md`
-- `docs/student-work-boundaries.md`
-- `docs/accessibility-checklist.md`
-- `CONTRIBUTING.md`
+- The goal of the game is to disperse the corruption causing the zombies to appear
+- To accomplish this the totem must be found in the house and buried in the garden
+- The player must explore the house and fight zombies
+- Use found items to help you survive encounters!
 
 ## Troubleshooting
 
