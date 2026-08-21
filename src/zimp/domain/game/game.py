@@ -1,23 +1,22 @@
+from zimp.domain.common.contract_events import ContractEvents
+from zimp.domain.common.contract_game_state import ContractGameState
+from zimp.domain.common.contract_items import ContractItems
+from zimp.domain.common.contract_movement import ContractMovement
 from zimp.domain.common.dev_card import CardEffectType
 from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
+from zimp.domain.common.item_code import ItemCode
 from zimp.domain.common.result import Result
 
-from zimp.domain.common.contract_items import ItemsContract
-from zimp.domain.common.contract_movement import MovementContract
-from zimp.domain.common.contract_events import EventsContract
-from zimp.domain.common.contract_game_state import GameStateContract
-
-from zimp.domain.common.item_code import ItemCode
 
 class Game:
     """Boundary class connecting the controller to domain components"""
 
     def __init__(self,
-                 state: GameStateContract,
-                 movement: MovementContract,
-                 items: ItemsContract,
-                 events: EventsContract,
+                 state: ContractGameState,
+                 movement: ContractMovement,
+                 items: ContractItems,
+                 events: ContractEvents,
                  map_seed: int | None = None,
                  debug: bool = False
                  ) -> None:
@@ -43,8 +42,8 @@ class Game:
         if self._debug:
             effect = draw_result.get_data()
             self._debug_msgs += ["CARD" + (f"{effect.effect_type.name}: {effect.value}"
-                if effect.effect_type in (CardEffectType.ZOMBIES, CardEffectType.HEALTH)
-                else effect.effect_type.name) + " | "]
+                                           if effect.effect_type in (CardEffectType.ZOMBIES, CardEffectType.HEALTH)
+                                           else effect.effect_type.name) + " | "]
         # end yucky debug
 
         self._state.apply_card_effect(draw_result.get_data())
@@ -66,7 +65,7 @@ class Game:
         """Reset all game components"""
         self._state.reset()
         self._events.reset()
-        self._movement.reset(randomizer_seed=map_seed) #408
+        self._movement.reset(randomizer_seed=map_seed)  # 408
         self._items.reset()
 
     def move_player(self, direction: Direction) -> ErrorCode | None:
@@ -78,7 +77,7 @@ class Game:
         if isinstance(move_result, ErrorCode):
             return move_result
 
-        if self._movement.is_placement_mode_on(): # Unknown tile
+        if self._movement.is_placement_mode_on():  # Unknown tile
             self._state.start_move()
             return None
 
@@ -86,7 +85,7 @@ class Game:
         self._debug_direction = direction
         # end yucky debug
 
-        return self._draw_event_card() # Known tile, skip placement
+        return self._draw_event_card()  # Known tile, skip placement
 
     def rotate_tile(self) -> ErrorCode | None:
         """Rotate the drawn tile in a given direction"""
@@ -121,7 +120,7 @@ class Game:
 
         return None
 
-    def attack(self, use_chainsaw: bool = False, instant_kill:bool = False) -> ErrorCode | None:
+    def attack(self, use_chainsaw: bool = False, instant_kill: bool = False) -> ErrorCode | None:
         """Fight any zombies on the current tile"""
         if not self._state.get_can_attack():
             return ErrorCode.CANT_ATTACK
@@ -287,11 +286,11 @@ class Game:
 
         self._state.do_end_turn_effect(tile_effect)
 
-        if self._state.get_is_doing_events(): # temple or graveyard
+        if self._state.get_is_doing_events():  # temple or graveyard
             return self._draw_event_card()
         elif self._state.get_is_searching_item():
             pass
-        else: #heal or none
+        else:  # heal or none
             self._state.start_new_turn()
 
         return None
@@ -311,14 +310,15 @@ class Game:
         attack = 1 + self._items.attack_bonus(False).get_data()
         items_tuple = self._items.held_items()
         items = f"{items_tuple[0]}, {items_tuple[1]}"
-        time = self._state.get_time()+9
+        time = self._state.get_time() + 9
         cards = self._events.get_remaining_card_count()
 
         if self._state.get_is_moving():
-            player = self._movement._GameMap__calculate_position(self._movement.get_player_position(), self._debug_direction).get_data()
+            player = self._movement._GameMap__calculate_position(self._movement.get_player_position(),
+                                                                 self._debug_direction).get_data()
         else:
             player = self._movement.get_player_position()
         doors = self._movement._GameMap__display_tiles.get(player).get_door_directions()
-        return f"Health: {hp}, Attack: {attack}, Items: {items}, Time: {time}, Cards: {cards}\n"\
-            + f"{doors}\n"\
+        return f"Health: {hp}, Attack: {attack}, Items: {items}, Time: {time}, Cards: {cards}\n" \
+            + f"{doors}\n" \
             + " ".join(self._debug_msgs)

@@ -5,14 +5,14 @@ from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.result import Result
 from zimp.domain.common.tile_data import TileData
 from zimp.domain.common.tile_effect import TileEffect
-from zimp.domain.movement.tile import Tile
-from zimp.domain.movement.tile_manager import TileManager
-from zimp.domain.movement.validators import is_valid_point_type, is_valid_point_within_range, validate_map_and_position, \
+from zimp.domain.map.tile import Tile
+from zimp.domain.map.tile_manager import TileManager
+from zimp.domain.map.validators import is_valid_point_type, is_valid_point_within_range, validate_map_and_position, \
     is_move_valid, is_valid_direction
 
 
 class GameMap:
-    """GameMap class used to hold and calculate tile placement and player movement data.
+    """GameMap class used to hold and calculate tile placement and player map data.
     Args:
         map_dimensions (tuple[int, int]): Map dimensions (width, height) (1-indexed). Defaults to (5, 5).
         starting_position (tuple[int, int]): Starting position (X, Y) (0-indexed). Defaults to (2, 4).

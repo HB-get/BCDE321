@@ -4,7 +4,7 @@ from zimp.domain.items.inventory import Effect
 
 
 @runtime_checkable
-class InventoryContract(Protocol):
+class ContractInventory(Protocol):
     """Contract the Tkinter path uses to reach the player's inventory.
 
     Illegal actions raise ValueError carrying a message meant for the player;

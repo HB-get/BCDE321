@@ -1,4 +1,4 @@
-from zimp.domain.common.contract_game import GameContract
+from zimp.domain.common.contract_game import ContractGame
 from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.item_code import ItemCode
@@ -7,7 +7,7 @@ from zimp.domain.common.item_code import ItemCode
 class GameController:
     """Thin, testable boundary between Tkinter events and domain behaviour."""
 
-    def __init__(self, game: GameContract):
+    def __init__(self, game: ContractGame):
         self._game = game
 
     def reset(self) -> str:
@@ -76,7 +76,6 @@ class GameController:
             return "Zombie door from east"
         else:
             return str(result)
-
 
     def zombie_door_down(self) -> str:
         result = self._game.pick_zombie_door(Direction.SOUTH)

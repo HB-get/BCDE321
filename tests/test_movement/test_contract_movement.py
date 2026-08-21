@@ -1,6 +1,7 @@
-from zimp.domain.common.contract_movement import MovementContract
-from zimp.domain.movement.game_map import GameMap
+from zimp.domain.common.contract_movement import ContractMovement
+from zimp.domain.map.game_map import GameMap
 
 
-def test_game_map_fits_movement_contract() -> None:
-    assert isinstance(GameMap(), MovementContract)
+class TestContractMovement():
+    def test_game_map_fits_movement_contract(self) -> None:
+        assert isinstance(GameMap(), ContractMovement)

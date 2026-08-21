@@ -9,17 +9,17 @@ arguments, not return types. Passing here means nothing was renamed or
 dropped. It does not mean the signatures agree.
 """
 
-from zimp.domain.common.contract_inventory import InventoryContract
-from zimp.domain.common.contract_items import ItemsContract
+from zimp.domain.common.contract_inventory import ContractInventory
+from zimp.domain.common.contract_items import ContractItems
 from zimp.domain.items.game_items import GameItems
 from zimp.domain.items.inventory import Inventory
 from zimp.support.items.fake_items import FakeItemsGateway
 
 
 def test_game_items_satisfies_the_game_contract() -> None:
-    assert isinstance(GameItems(), ItemsContract)
+    assert isinstance(GameItems(), ContractItems)
 
 
 def test_real_and_fake_satisfy_the_inventory_contract() -> None:
-    assert isinstance(Inventory(), InventoryContract)
-    assert isinstance(FakeItemsGateway(), InventoryContract)
+    assert isinstance(Inventory(), ContractInventory)
+    assert isinstance(FakeItemsGateway(), ContractInventory)

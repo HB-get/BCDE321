@@ -1,4 +1,4 @@
-from zimp.domain.common.contract_inventory import InventoryContract
+from zimp.domain.common.contract_inventory import ContractInventory
 from zimp.domain.contracts import MovementGateway
 from zimp.domain.items.inventory import Effect
 
@@ -6,7 +6,7 @@ from zimp.domain.items.inventory import Effect
 class FakeGameController:
     """Fake for game controller, used for items boundary testing."""
 
-    def __init__(self, movement: MovementGateway, items: InventoryContract) -> None:
+    def __init__(self, movement: MovementGateway, items: ContractInventory) -> None:
         self._movement = movement
         self._items = items
 
@@ -16,7 +16,7 @@ class FakeGameController:
         except ValueError as error:
             return f"Cannot move: {error}"
         except RuntimeError:
-            return "Cannot move: the movement component is currently unavailable."
+            return "Cannot move: the map component is currently unavailable."
 
     def handle_pick_up_item(self, item_id: str) -> str:
         try:

@@ -135,6 +135,7 @@ class FakeGameState:
 
     def start_combat(self, num_zombies: int) -> None:
         pass
+
     def end_combat(self) -> None:
         pass
 
@@ -150,6 +151,7 @@ class FakeGameState:
 
     def take_totem(self) -> None:
         pass
+
     def bury_totem(self) -> None:
         pass
 
@@ -164,7 +166,7 @@ class FakeGameState:
 
 
 class FakeMovement:
-    """Fake Movement used to isolate Game from the map/movement domain."""
+    """Fake Movement used to isolate Game from the map/map domain."""
 
     def __init__(self) -> None:
         self.reset_calls = -1
@@ -172,7 +174,6 @@ class FakeMovement:
 
     def reset(self, map_dimensions=None, starting_position=None,
               randomizer_seed=None) -> ErrorCode | None:
-
         self.reset_calls += 1
 
         self.move_result = None
@@ -208,8 +209,8 @@ class FakeMovement:
         return self.flee_result
 
     def create_zombie_door(
-        self,
-        direction: Direction
+            self,
+            direction: Direction
     ) -> ErrorCode | None:
         self.create_zombie_door_calls.append(direction)
         return self.create_zombie_door_result
@@ -339,6 +340,7 @@ class FakeEvents:
 
     def get_remaining_card_count(self):
         return 0
+
     def draw_event(self, time: int) -> tuple[Result, bool]:
         self.draw_event_calls.append(time)
         return self.draw_event_result, self.draw_event_shuffled

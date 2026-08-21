@@ -1,6 +1,6 @@
 from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
-from zimp.domain.movement.tile import Tile
+from zimp.domain.map.tile import Tile
 
 
 def is_valid_direction(value: Direction) -> bool:

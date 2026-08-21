@@ -4,8 +4,8 @@ from zimp.domain.common.direction import Direction
 from zimp.domain.common.error_code import ErrorCode
 from zimp.domain.common.result import Result
 from zimp.domain.common.tile_effect import TileEffect
-from zimp.domain.movement.tile import Tile
-from zimp.domain.movement.validators import is_valid_seed
+from zimp.domain.map.tile import Tile
+from zimp.domain.map.validators import is_valid_seed
 
 
 class TileManager:

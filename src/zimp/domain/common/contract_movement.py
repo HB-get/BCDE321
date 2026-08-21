@@ -7,8 +7,8 @@ from zimp.domain.common.tile_effect import TileEffect
 
 
 @runtime_checkable
-class MovementContract(Protocol):
-    """Contract for movement"""
+class ContractMovement(Protocol):
+    """Contract for map"""
 
     def move(self, direction: Direction) -> ErrorCode | None:
         """Attempt to move the player in the given direction"""
